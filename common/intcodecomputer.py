@@ -179,7 +179,12 @@ class CodeExecutor:
 		self.input_pointer = 0
 		self.output_pointer = 0
 		self.output = []
-		self.inputs = inputs.copy()
+		
+		if type(inputs) is str:
+			self.inputs = [ord(x) for x in inputs]
+			self.inputs.append(ord('\n'))
+		else:
+			self.inputs = inputs.copy()
 		
 		if not self.is_initialized:
 			self.is_initialized = True
@@ -207,3 +212,13 @@ class CodeExecutor:
 				break
 			
 		return self.output
+		
+	def print_output_as_ascii(self):
+		ascii_output = []
+		for x in self.output:
+			if x > 256:
+				ascii_output.append(str(x))
+			else:
+				ascii_output.append(chr(x))
+
+		print(''.join(ascii_output))
